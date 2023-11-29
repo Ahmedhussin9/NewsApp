@@ -1,7 +1,8 @@
-package com.example.domain.model
+package com.example.domain.model.sourcesResponse
 
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import com.example.domain.model.sourcesResponse.Source
 import com.google.gson.annotations.SerializedName
 
 @Parcelize

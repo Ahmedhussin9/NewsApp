@@ -1,14 +1,12 @@
 package com.example.newsapp.ui.activites.categories
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.newsapp.R
 import com.example.newsapp.databinding.CatergoryItemBinding
 
-class CategoreiesAdapter(var categories:List<CategoriesDataClass>):RecyclerView.Adapter<CategoreiesAdapter.ViewHolder>() {
+class CategoreiesAdapter(var categories:List<CategoriesDataClass>?):RecyclerView.Adapter<CategoreiesAdapter.ViewHolder>() {
     class ViewHolder( var viewBinding:CatergoryItemBinding):RecyclerView.ViewHolder(viewBinding.root){
         fun bind(item:CategoriesDataClass){
             viewBinding.cat = item
@@ -25,10 +23,22 @@ class CategoreiesAdapter(var categories:List<CategoriesDataClass>):RecyclerView.
     }
 
     override fun getItemCount(): Int {
-        return categories.size
+        return categories?.size?:0
     }
-
+    var onCategoryClickListener:OnCategoryClickListener?=null
+    fun interface OnCategoryClickListener{
+         fun onItemClick(position: Int,item: CategoriesDataClass)
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(categories[position])
+        holder.bind(categories!![position])
+        if (onCategoryClickListener!=null){
+            holder.viewBinding.root.setOnClickListener(){
+                onCategoryClickListener?.onItemClick(position,categories!![position] )
+            }
+        }
+    }
+    fun bindItems(items :List<CategoriesDataClass>?){
+        categories = items
+        notifyDataSetChanged()
     }
 }

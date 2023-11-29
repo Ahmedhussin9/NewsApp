@@ -1,8 +1,10 @@
 package com.example.newsapp.ui.activites.categories
 
 import com.example.newsapp.R
+import dagger.Provides
+import javax.inject.Inject
 
-data class CategoriesDataClass(
+data class CategoriesDataClass (
     var id:String,
     var name:String,
     var imageId:Int,
