@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="news"
+            type="com.example.domain.model.newsResponse.News" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            url="@{news.urlToImage}"
+            />
+
+        <TextView
+            android:id="@+id/source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="News title"
+            android:text="@{news.source.name}"
+            android:textSize="15sp"
+            android:textColor="@color/gray" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="News title"
+            android:text="@{news.title}"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/gray"/>
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            tools:text="News title"
+            android:text="@{news.publishedAt}"
+            android:textSize="18sp"
+            android:layout_gravity="end"
+            android:textColor="@color/gray"/>
+    </LinearLayout>
+</layout>
