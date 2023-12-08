@@ -1,5 +1,8 @@
 package com.example.newsapp
 
+import android.content.Intent
+import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat

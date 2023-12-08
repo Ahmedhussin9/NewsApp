@@ -3,6 +3,7 @@ package com.example.newsapp.ui.activites.news
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.model.newsResponse.News
 import com.example.domain.model.sourcesResponse.Source
 import com.example.domain.usecases.news.GetNewsUseCase
 import com.example.domain.usecases.sources.GetNewsSourcesUseCase
@@ -27,7 +28,12 @@ class NewsViewModel @Inject constructor(
         when(action){
             is NewsContract.Action.GetNewsSources->getNewsSources(action.categoryId)
             is NewsContract.Action.GetArticles->getArticles(action.sourceId)
+            is NewsContract.Action.OnArticleClick->navigateToArticleDetails(action.article)
         }
+    }
+
+    private fun navigateToArticleDetails(article: News) {
+        _events.postValue(NewsContract.Event.NavigateToArticleDetails(article))
     }
 
     private fun getArticles(sourceId: String?) {
@@ -37,13 +43,11 @@ class NewsViewModel @Inject constructor(
                 val data = sourceId?.let { getNewsUseCase.invoke(it) }
                 _states.postValue(NewsContract.State.ArticlesSuccess(data = data))
             }catch (e:Exception){
-                _states.postValue(e.message?.let { NewsContract.State.Error(it) })
+                _states.postValue(NewsContract.State.Error("Please Try Again"))
             }
         }
 
     }
-
-
     fun getNewsSources(categoryId: String?) {
         _states.postValue(NewsContract.State.Loading())
         viewModelScope.launch {
@@ -51,7 +55,7 @@ class NewsViewModel @Inject constructor(
                 val data = categoryId?.let { getNewsSourcesUseCase.invoke(it) }
                 _states.postValue(NewsContract.State.SourcesSuccess(data))
             }catch (e:Exception){
-                _states.postValue(e.message?.let { NewsContract.State.Error(it) })
+                _states.postValue(NewsContract.State.Error("Please Try Again"))
             }
         }
     }
