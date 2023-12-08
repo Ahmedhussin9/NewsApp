@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.activites.news
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
@@ -10,6 +11,7 @@ import com.example.domain.model.sourcesResponse.Source
 import com.example.newsapp.databinding.ActivityNewsBinding
 import com.example.newsapp.Constnats
 import com.example.newsapp.R
+import com.example.newsapp.ui.activites.article_details.ArticleDetails
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +26,20 @@ class News : AppCompatActivity() {
         initPrams()
         loadSources()
         observeLiveData()
+        onArticleClick()
+    }
+
+    private fun onArticleClick() {
+        adapter.onArticleClickListener=NewsAdapter.OnArticleClickListener(){
+            position, item ->
+            viewModel.invoke(NewsContract.Action.OnArticleClick(item))
+        }
+    }
+
+    private fun navigateToArticleDetails(item: News) {
+        val intent = Intent(this,ArticleDetails::class.java)
+        intent.putExtra(Constnats.EXTRA_ARTICLE,item)
+        startActivity(intent)
     }
 
     private fun loadSources() {
@@ -37,6 +53,11 @@ class News : AppCompatActivity() {
                 is NewsContract.State.ArticlesSuccess->showArticles(it.data)
                 is NewsContract.State.Loading->showLoading()
                 is NewsContract.State.Error->showError(it)
+            }
+        }
+        viewModel.events.observe(this){
+            when(it){
+                is NewsContract.Event.NavigateToArticleDetails->navigateToArticleDetails(it.article)
             }
         }
     }

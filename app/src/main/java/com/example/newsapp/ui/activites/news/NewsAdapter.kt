@@ -25,8 +25,20 @@ class NewsAdapter(var newsList:List<com.example.domain.model.newsResponse.News?>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val news = newsList!![position]
         holder.bind(news)
+        if (onArticleClickListener!=null){
+            holder.viewBinding.root.setOnClickListener(){
+                newsList!![position]?.let { it1 ->
+                    onArticleClickListener?.onItemClick(position,
+                        it1
+                    )
+                }
+            }
+        }
     }
-
+     var onArticleClickListener:OnArticleClickListener?=null
+    fun interface OnArticleClickListener{
+        fun onItemClick(position: Int,item:News)
+    }
     fun bindNews(articles: List<News?>?) {
         newsList = articles
         notifyDataSetChanged()
